@@ -1,0 +1,26 @@
+.venv/
+venv/
+ENV/
+env/
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.pytest_cache/
+.htmlreport/
+report.html
+screenshots/
+videos/
+
+config/environments/*.env
+!config/environments/dev.env.example  # якщо створиш шаблонний файл, його ігнорувати не треба
+
+*.log
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
