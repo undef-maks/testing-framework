@@ -40,5 +40,8 @@
 3. UI-тести (автоматизація користувацького інтерфейсу через Playwright POM):
    env PYTHONPATH=. pytest tests/ui/ -v
 
+4. **Системні тести** (End-to-End сценарії, логін та навігація):
+   env PYTHONPATH=. pytest tests/system/ -v
+
 _Щоб запустити взагалі всі тести одночасно, виконайте:_
 env PYTHONPATH=. pytest -v
