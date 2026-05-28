@@ -13,8 +13,13 @@ def playwright_instance():
 
 @pytest.fixture(scope="session")
 def browser(playwright_instance):
-    logger.info(f"Запуск браузера: {settings.BROWSER}")
-    browser_type = getattr(playwright_instance, settings.BROWSER)
+    # Захист від глобального $BROWSER з Linux
+    valid_browsers = ["chromium", "firefox", "webkit"]
+    browser_name = settings.BROWSER if settings.BROWSER in valid_browsers else "chromium"
+    
+    logger.info(f"Запуск браузера Playwright (конфіг/система: {settings.BROWSER} -> обрано рушій: {browser_name})")
+    
+    browser_type = getattr(playwright_instance, browser_name)
     browser = browser_type.launch(headless=settings.HEADLESS)
     yield browser
     browser.close()
@@ -31,3 +36,13 @@ def page(browser):
 @pytest.fixture(scope="function")
 def login_page(page):
     return LoginPage(page)
+
+@pytest.fixture(scope="session")
+def api_request_context(playwright_instance):
+    logger.info("Ініціалізація Playwright APIRequestContext...")
+    request_context = playwright_instance.request.new_context(
+        base_url="https://jsonplaceholder.typicode.com"
+    )
+    yield request_context
+    logger.info("Закриття Playwright APIRequestContext.")
+    request_context.dispose()
